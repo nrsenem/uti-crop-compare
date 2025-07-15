@@ -37,26 +37,60 @@ class OutputImage(Output):
         title = "Image"
 
 
-class CropVariable(Config):
-    """
-         Ne kadar crop yapmak istediğinizi yüzdelik üzerinden giriniz.
-    """
-    name: Literal["cropVariable"] = "cropVariable"
-    value: int = Field(default=1, ge=1, le=100)
-    type: Literal["number"] = "number"
-    field: Literal["textInput"] = "textInput"
-    placeHolder: Literal["integers between [0, 100]"] = "integers between [0, 100]"
+
+class KeepSideFalse(Config):
+    name: Literal["False"] = "False"
+    value: Literal[False] = False
+    type: Literal["bool"] = "bool"
+    field: Literal["option"] = "option"
 
     class Config:
-        title = "Crop Percentage"
+        title = "Disable"
+
+
+class KeepSideTrue(Config):
+    name: Literal["True"] = "True"
+    value: Literal[True] = True
+    type: Literal["bool"] = "bool"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Enable"
+
+
+class KeepSideBBox(Config):
+    """
+        Rotate image without catting off sides.
+    """
+    name: Literal["KeepSide"] = "KeepSide"
+    value: Union[KeepSideTrue, KeepSideFalse]
+    type: Literal["object"] = "object"
+    field: Literal["dropdownlist"] = "dropdownlist"
+
+    class Config:
+        title = "Keep Sides"
+
+
+class Degree(Config):
+    """
+        Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
+    """
+    name: Literal["Degree"] = "Degree"
+    value: int = Field(ge=-359.0, le=359.0,default=0)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[-359, 359]"] = "[-359, 359]"
+
+    class Config:
+        title = "Angle"
 
 class CropExecutorInputs(Inputs):
     inputImage: InputImage
 
 
 class CropExecutorConfigs(Configs):
-   cropVariable:CropVariable
-
+    degree: Degree
+    drawBBox: KeepSideBBox
 
 class CropExecutorOutputs(Outputs):
     outputImage: OutputImage

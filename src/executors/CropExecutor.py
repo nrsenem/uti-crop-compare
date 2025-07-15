@@ -1,4 +1,3 @@
-
 """
     It is one of the preprocessing components in which the image is rotated.
 """
@@ -20,7 +19,8 @@ class CropExecutor(Component):
     def __init__(self, request, bootstrap):
         super().__init__(request, bootstrap)
         self.request.model = PackageModel(**(self.request.data))
-        self.rotation_degree = self.request.get_param("cropVariable")
+        self.rotation_degree = self.request.get_param("Degree")
+        self.keep_side = self.request.get_param("KeepSide")
         self.image = self.request.get_param("inputImage")
 
     @staticmethod
@@ -28,13 +28,9 @@ class CropExecutor(Component):
         return {}
 
     def crop(self, img):
-        h, w = img.shape[:2]
-        crop_cfg = self.cropVariable
-        new_w, new_h = int(w * crop_cfg), int(h * crop_cfg)
-        x = (w - new_w) // 2
-        y = (h - new_h) // 2
-        cropped = img[y:y + new_h, x:x + new_w]
-        return cropped
+        x_start, y_start, x_end, y_end = 400, 200, 850, 700
+        cropped_img = img[y_start:y_end, x_start:x_end]
+        return cropped_img
 
     def run(self):
         img = Image.get_frame(img=self.image, redis_db=self.redis_db)
@@ -46,4 +42,3 @@ class CropExecutor(Component):
 
 if "__main__" == __name__:
     Executor(sys.argv[1]).run()
-    
