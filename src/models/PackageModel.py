@@ -113,7 +113,7 @@ class CropExecutorResponse(Response):
 
 
 class CropExecutor(Config):
-    name: Literal["Package"] = "Package"
+    name: Literal["CropExecutor"] = "CropExecutor"
     value: Union[CropExecutorRequest, CropExecutorResponse]
     type: Literal["object"] = "object"
     field: Literal["option"] = "option"
