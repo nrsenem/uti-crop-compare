@@ -118,7 +118,7 @@ class CompareExecutor(Config):
     field: Literal["option"] = "option"
 
     class Config:
-        title = "Package"
+        title = "Compare"
         json_schema_extra = {
             "target": {
                 "value": 0
@@ -160,7 +160,7 @@ class CropExecutor(Config):
     field: Literal["option"] = "option"
 
     class Config:
-        title = "Package"
+        title = "Crop"
         json_schema_extra = {
             "target": {
                 "value": 0
