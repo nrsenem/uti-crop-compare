@@ -1,14 +1,14 @@
 
 from sdks.novavision.src.helper.package import PackageHelper
-from components.Package.src.models.PackageModel import PackageModel, PackageConfigs, ConfigExecutor, PackageOutputs, PackageResponse, PackageExecutor, OutputImage
+from components.CropCompare.src.models.PackageModel import PackageModel, PackageConfigs, ConfigExecutor, CropExecutorOutputs, CropExecutorResponse, CropExecutor, OutputImage
 
 
 def build_response(context):
     outputImage = OutputImage(value=context.image)
-    Outputs = PackageOutputs(outputImage=outputImage)
-    packageResponse = PackageResponse(outputs=Outputs)
-    packageExecutor = PackageExecutor(value=packageResponse)
-    executor = ConfigExecutor(value=packageExecutor)
+    cropExecutorOutputs= CropExecutorOutputs(outputImage=outputImage)
+    cropExecutorResponse = CropExecutorResponse(outputs=cropExecutorOutputs)
+    cropExecutor = CropExecutor(value=cropExecutorResponse)
+    executor = ConfigExecutor(value=cropExecutor)
     packageConfigs = PackageConfigs(executor=executor)
     package = PackageHelper(packageModel=PackageModel, packageConfigs=packageConfigs)
     packageModel = package.build_model(context)
