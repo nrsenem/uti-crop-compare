@@ -72,17 +72,14 @@ class KeepSideBBox(Config):
 
 
 class Degree(Config):
-    """
-        Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
-    """
     name: Literal["Degree"] = "Degree"
-    value: int = Field(ge=-359.0, le=359.0, default=0)
+    value: int = Field(ge=0, le=100, default=0)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
-    placeHolder: Literal["[-359, 359]"] = "[-359, 359]"
+    placeHolder: Literal["[0, 100]"] = "[0, 100]"
 
     class Config:
-        title = "Angle"
+        title = "Crop Percent"
 
 
 class CompareExecutorInputs(Inputs):
