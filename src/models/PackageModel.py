@@ -201,12 +201,15 @@ class CropExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[CropExecutor, CompareExecutor]
+    value: Union[CropExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
     class Config:
         title = "Task"
+        schema_extra = {
+            "target" :"value"
+        }
 
 
 class PackageConfigs(Configs):
