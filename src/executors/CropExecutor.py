@@ -27,9 +27,10 @@ class CropExecutor(Component):
     def bootstrap(config: dict) -> dict:
         return {}
 
+
     def crop(self, image):
         h, w = image.shape[:2]
-        crop_factor = 1 + (self.cropVariable / 100)
+        crop_factor = 1 + (self.zoomVariable / 100)  # Crop miktarını zoom gibi belirliyoruz
         new_h = int(h / crop_factor)
         new_w = int(w / crop_factor)
 
