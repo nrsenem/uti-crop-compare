@@ -105,7 +105,7 @@ class KeepSideBBox(Config):
 
 class CropVariable(Config):
     name: Literal["CropVariable"] = "CropVariable"
-    value: int = Field(ge=1, le=100, default=1)
+    value: int = Field(ge=0, le=100, default=0)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
     placeHolder: Literal["[0, 100]"] = "[0, 100]"
@@ -114,12 +114,55 @@ class CropVariable(Config):
         title = "Crop Percent"
 
 
+class CompareExecutorInputs(Inputs):
+    inputImage: InputImage
+    inputSecondImage: InputSecondImage
+
+class CompareExecutorConfigs(Configs):
+    drawBBox: KeepSideBBox
+
+
+
+class CompareExecutorOutputs(Outputs):
+    outputImage: OutputImage
+    outputSecondImage: OutputSecondImage
+
+
+class CompareExecutorRequest(Request):
+    inputs: Optional[CompareExecutorInputs]
+    configs: CompareExecutorConfigs
+
+    class Config:
+        json_schema_extra = {
+            "target": "configs"
+        }
+
+
+class CompareExecutorResponse(Response):
+    outputs: CompareExecutorOutputs
+
+
+class CompareExecutor(Config):
+    name: Literal["CompareExecutor"] = "CompareExecutor"
+    value: Union[CompareExecutorRequest, CompareExecutorResponse]
+    type: Literal["object"] = "object"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Compare"
+        json_schema_extra = {
+            "target": {
+                "value": 0
+            }
+        }
+
+
 class CropExecutorInputs(Inputs):
     inputImage: InputImage
 
 
 class CropExecutorConfigs(Configs):
-    cropVariable : CropVariable
+    cropVariable: CropVariable
     drawBBox: KeepSideBBox
 
 
