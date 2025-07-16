@@ -72,7 +72,7 @@ class OutputSecondImage(Output):
 
 
 class CropVariable(Config):
-    name: Literal["CropVariable"] = "CropVariable"
+    name: Literal["cropVariable"] = "cropVariable"
     value: int = Field(ge=0, le=100, default=0)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
