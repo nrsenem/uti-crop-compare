@@ -68,10 +68,83 @@ class OutputSecondImage(Output):
 
     class Config:
         title = "Image"
+class TextWriterText(Config):
+    name: Literal["textWriterText"] = "textWriterText"
+    value: str
+    type: Literal["string"] = "string"
+    field: Literal["textInput"] = "textInput"
 
+    class Config:
+        title = "Text Writer Input"
+
+class Left(Config):
+    configEdit: TextWriterText
+    name: Literal["Left"] = "Left"
+    value: Literal["Left"] = "Left"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Left"
+
+class Right(Config):
+    configEdit: TextWriterText
+    name: Literal["Right"] = "Right"
+    value: Literal["Right"] = "Right"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Right"
+
+class Bottom(Config):
+    configEdit: TextWriterText
+    name: Literal["Bottom"] = "Bottom"
+    value: Literal["Bottom"] = "Bottom"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Bottom"
+
+class Top(Config):
+    configEdit: TextWriterText
+    name: Literal["Top"] = "Top"
+    value: Literal["Top"] = "Top"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Top"
+
+class Center(Config):
+    configEdit: TextWriterText
+    name: Literal["Center"] = "Center"
+    value: Literal["Center"] = "Center"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Center"
+
+
+class ConfigTypeTextWriter(Config):
+    """
+        Yazınızın resimde ki konumu.
+    """
+    name: Literal["configTypeTextWriter"] = "configTypeTextWriter"
+    value: Union[Center, Top, Left, Right, Bottom]
+    type: Literal["object"] = "object"
+    field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
+
+    class Config:
+        title = "Text Writer"
 
 
 class CropVariable(Config):
+    """
+      NE KADAR KIRPMAK İSTİYORSANIZ YÜZDE CİNSİNDEN GİRİNİZ
+    """
     name: Literal["cropVariable"] = "cropVariable"
     value: int = Field(ge=0, le=100, default=0)
     type: Literal["number"] = "number"
@@ -80,6 +153,47 @@ class CropVariable(Config):
 
     class Config:
         title = "Crop Percent"
+
+class CompareExecutorInputs(Inputs):
+    inputImage: InputImage
+    inputSecondImage: InputSecondImage
+
+
+class CompareExecutorConfigs(Configs):
+    configTypeTextWriter: ConfigTypeTextWriter
+
+
+class CompareExecutorOutputs(Outputs):
+    outputImage: OutputImage
+    outputSecondImage: OutputSecondImage
+
+
+class CompareExecutorRequest(Request):
+    inputs: Optional[CompareExecutorInputs]
+    configs: CompareExecutorConfigs
+
+    class Config:
+        json_schema_extra = {
+            "target": "configs"
+        }
+
+
+class CompareExecutorResponse(Response):
+    outputs: CompareExecutorOutputs
+
+class CompareExecutor(Config):
+    name: Literal["CompareExecutor"] = "CompareExecutor"
+    value: Union[CompareExecutorRequest, CompareExecutorResponse]
+    type: Literal["object"] = "object"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Compare"
+        json_schema_extra = {
+            "target": {
+                "value": 0
+            }
+        }
 
 class CropExecutorInputs(Inputs):
     inputImage: InputImage
@@ -125,15 +239,13 @@ class CropExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[CropExecutor]
+    value: Union[CropExecutor,CompareExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
     class Config:
         title = "Task"
-        json_schema_extra = {
-            "target" :"value"
-        }
+
 
 
 class PackageConfigs(Configs):
