@@ -19,7 +19,7 @@ class CropExecutor(Component):
     def __init__(self, request, bootstrap):
         super().__init__(request, bootstrap)
         self.request.model = PackageModel(**(self.request.data))
-        self.rotation_degree = self.request.get_param("Degree")
+        self.rotation_degree = self.request.get_param("CropVariable")
         self.keep_side = self.request.get_param("KeepSide")
         self.image = self.request.get_param("inputImage")
 
@@ -27,14 +27,23 @@ class CropExecutor(Component):
     def bootstrap(config: dict) -> dict:
         return {}
 
-    def crop(self, img):
-        x_start, y_start, x_end, y_end = 400, 200, 850, 700
-        cropped_img = img[y_start:y_end, x_start:x_end]
-        return cropped_img
+    def crop_image(self, image):
+        h, w = image.shape[:2]
+        crop_percent = self.cropVariable / 100.0  # örn. 20 → 0.2
+        new_h = int(h * (1 - crop_percent))
+        new_w = int(w * (1 - crop_percent))
+
+        center_y = h // 2
+        center_x = w // 2
+        start_y = center_y - new_h // 2
+        start_x = center_x - new_w // 2
+
+        cropped = image[start_y:start_y + new_h, start_x:start_x + new_w]
+        return cropped
 
     def run(self):
         img = Image.get_frame(img=self.image, redis_db=self.redis_db)
-        img.value = self.crop(img.value)
+        img.value = self.crop_image(img.value)
         self.image = Image.set_frame(img=img, package_uID=self.uID, redis_db=self.redis_db)
         packageModel = build_response(context=self)
         return packageModel
