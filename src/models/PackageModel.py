@@ -70,53 +70,9 @@ class OutputSecondImage(Output):
         title = "Image"
 
 
-class KeepSideFalse(Config):
-    name: Literal["False"] = "False"
-    value: Literal[False] = False
-    type: Literal["bool"] = "bool"
-    field: Literal["option"] = "option"
-
-    class Config:
-        title = "Disable"
-
-
-class KeepSideTrue(Config):
-    name: Literal["True"] = "True"
-    value: Literal[True] = True
-    type: Literal["bool"] = "bool"
-    field: Literal["option"] = "option"
-
-    class Config:
-        title = "Enable"
-
-
-class KeepSideBBox(Config):
-    """
-        Rotate image without catting off sides.
-    """
-    name: Literal["KeepSide"] = "KeepSide"
-    value: Union[KeepSideTrue, KeepSideFalse]
-    type: Literal["object"] = "object"
-    field: Literal["dropdownlist"] = "dropdownlist"
-
-    class Config:
-        title = "Keep Sides"
 
 class CropVariable(Config):
-    """
-         Ne kadar zoom yapmak istediğinizi yüzdelik üzerinden giriniz.
-    """
-    name: Literal["zoomVariable"] = "zoomVariable"
-    value: int = Field(default=1, ge=1, le=100)
-    type: Literal["number"] = "number"
-    field: Literal["textInput"] = "textInput"
-    placeHolder: Literal["integers between [0, 100]"] = "integers between [0, 100]"
-
-    class Config:
-        title = "Zoom Percentage"
-
-class CropVariable(Config):
-    name: Literal["CropVariable"] = "CropVariable"
+    name: Literal["cropVariable"] = "cropVariable"
     value: int = Field(ge=0, le=100, default=0)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -130,9 +86,8 @@ class CropExecutorInputs(Inputs):
 
 
 class CropExecutorConfigs(Configs):
-    drawBBox: KeepSideBBox
     cropVariable: CropVariable
-    
+
 
 
 class CropExecutorOutputs(Outputs):
@@ -176,7 +131,7 @@ class ConfigExecutor(Config):
 
     class Config:
         title = "Task"
-        schema_extra = {
+        json_schema_extra = {
             "target" :"value"
         }
 
