@@ -54,7 +54,7 @@ class OutputImage(Output):
         title = "Image"
 
 class OutputSecondImage(Output):
-    name: Literal["outputImageTwo"] = "outputImageTwo"
+    name: Literal["outputSecondImage"] = "outputSecondImage"
     value: Union[List[Image],Image]
     type: str = "object"
 
