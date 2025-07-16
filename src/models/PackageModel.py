@@ -143,7 +143,7 @@ class CompareExecutorResponse(Response):
 
 
 class CompareExecutor(Config):
-    name: Literal["CompareExecutor"] = "CropExecutor"
+    name: Literal["CompareExecutor"] = "CompareExecutor"
     value: Union[CompareExecutorRequest, CompareExecutorResponse]
     type: Literal["object"] = "object"
     field: Literal["option"] = "option"
