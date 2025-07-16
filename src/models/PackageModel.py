@@ -103,8 +103,8 @@ class KeepSideBBox(Config):
         title = "Keep Sides"
 
 
-class Degree(Config):
-    name: Literal["Degree"] = "Degree"
+class CropVariable(Config):
+    name: Literal["CropVariable"] = "CropVariable"
     value: int = Field(ge=0, le=100, default=0)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -114,47 +114,6 @@ class Degree(Config):
         title = "Crop Percent"
 
 
-class CompareExecutorInputs(Inputs):
-    inputImage: InputImage
-    inputSecondImage: InputSecondImage
-
-class CompareExecutorConfigs(Configs):
-    drawBBox: KeepSideBBox
-
-
-
-class CompareExecutorOutputs(Outputs):
-    outputImage: OutputImage
-    outputSecondImage: OutputSecondImage
-
-
-class CompareExecutorRequest(Request):
-    inputs: Optional[CompareExecutorInputs]
-    configs: CompareExecutorConfigs
-
-    class Config:
-        json_schema_extra = {
-            "target": "configs"
-        }
-
-
-class CompareExecutorResponse(Response):
-    outputs: CompareExecutorOutputs
-
-
-class CompareExecutor(Config):
-    name: Literal["CompareExecutor"] = "CompareExecutor"
-    value: Union[CompareExecutorRequest, CompareExecutorResponse]
-    type: Literal["object"] = "object"
-    field: Literal["option"] = "option"
-
-    class Config:
-        title = "Compare"
-        json_schema_extra = {
-            "target": {
-                "value": 0
-            }
-        }
 
 
 class CropExecutorInputs(Inputs):
@@ -162,7 +121,7 @@ class CropExecutorInputs(Inputs):
 
 
 class CropExecutorConfigs(Configs):
-    degree: Degree
+    cropVariable: CropVariable
     drawBBox: KeepSideBBox
 
 
@@ -201,12 +160,15 @@ class CropExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[CropExecutor, CompareExecutor]
+    value: Union[CropExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
     class Config:
         title = "Task"
+        schema_extra = {
+            "target" :"value"
+        }
 
 
 class PackageConfigs(Configs):
