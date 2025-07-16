@@ -21,9 +21,41 @@ class InputImage(Input):
         title = "Image"
 
 
+class InputSecondImage(Input):
+    name: Literal["inputSecondImage"] = "inputSecondImage"
+    value: Union[List[Image], Image]
+    type: str = "object"
+
+    @validator("type", pre=True, always=True)
+    def set_type_based_on_value(cls, value, values):
+        value = values.get('value')
+        if isinstance(value, Image):
+            return "object"
+        elif isinstance(value, list):
+            return "list"
+
+    class Config:
+        title = "Image"
+
 class OutputImage(Output):
     name: Literal["outputImage"] = "outputImage"
     value: Union[List[Image], Image]
+    type: str = "object"
+
+    @validator("type", pre=True, always=True)
+    def set_type_based_on_value(cls, value, values):
+        value = values.get('value')
+        if isinstance(value, Image):
+            return "object"
+        elif isinstance(value, list):
+            return "list"
+
+    class Config:
+        title = "Image"
+
+class OutputSecondImage(Output):
+    name: Literal["outputImageTwo"] = "outputImageTwo"
+    value: Union[List[Image],Image]
     type: str = "object"
 
     @validator("type", pre=True, always=True)
@@ -84,14 +116,16 @@ class Degree(Config):
 
 class CompareExecutorInputs(Inputs):
     inputImage: InputImage
-
+    inputSecondImage: InputSecondImage
 
 class CompareExecutorConfigs(Configs):
     drawBBox: KeepSideBBox
 
 
+
 class CompareExecutorOutputs(Outputs):
     outputImage: OutputImage
+    outputSecondImage: OutputSecondImage
 
 
 class CompareExecutorRequest(Request):
