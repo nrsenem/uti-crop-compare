@@ -102,7 +102,7 @@ class KeepSideBBox(Config):
     class Config:
         title = "Keep Sides"
 
-class ZoomVariable(Config):
+class CropVariable(Config):
     """
          Ne kadar zoom yapmak istediğinizi yüzdelik üzerinden giriniz.
     """
