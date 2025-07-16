@@ -103,8 +103,8 @@ class KeepSideBBox(Config):
         title = "Keep Sides"
 
 
-class CropVariable(Config):
-    name: Literal["CropVariable"] = "CropVariable"
+class Degree(Config):
+    name: Literal["Degree"] = "Degree"
     value: int = Field(ge=0, le=100, default=0)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -162,7 +162,7 @@ class CropExecutorInputs(Inputs):
 
 
 class CropExecutorConfigs(Configs):
-    cropVariable: CropVariable
+    degree: Degree
     drawBBox: KeepSideBBox
 
 
@@ -201,15 +201,12 @@ class CropExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[CropExecutor]
+    value: Union[CropExecutor, CompareExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
     class Config:
         title = "Task"
-        json_schema_extra = {
-            "target" :"value"
-        }
 
 
 class PackageConfigs(Configs):
