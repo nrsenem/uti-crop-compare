@@ -20,7 +20,6 @@ class CropExecutor(Component):
         super().__init__(request, bootstrap)
         self.request.model = PackageModel(**(self.request.data))
         self.rotation_cropVariable = self.request.get_param("CropVariable")
-        self.keep_side = self.request.get_param("KeepSide")
         self.image = self.request.get_param("inputImage")
 
     @staticmethod
