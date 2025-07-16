@@ -102,6 +102,18 @@ class KeepSideBBox(Config):
     class Config:
         title = "Keep Sides"
 
+class ZoomVariable(Config):
+    """
+         Ne kadar zoom yapmak istediğinizi yüzdelik üzerinden giriniz.
+    """
+    name: Literal["zoomVariable"] = "zoomVariable"
+    value: int = Field(default=1, ge=1, le=100)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["integers between [0, 100]"] = "integers between [0, 100]"
+
+    class Config:
+        title = "Zoom Percentage"
 
 class CropVariable(Config):
     name: Literal["CropVariable"] = "CropVariable"
@@ -113,16 +125,14 @@ class CropVariable(Config):
     class Config:
         title = "Crop Percent"
 
-
-
-
 class CropExecutorInputs(Inputs):
     inputImage: InputImage
 
 
 class CropExecutorConfigs(Configs):
-    cropVariable: CropVariable
     drawBBox: KeepSideBBox
+    cropVariable: CropVariable
+    
 
 
 class CropExecutorOutputs(Outputs):
